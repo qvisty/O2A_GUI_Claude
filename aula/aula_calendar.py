@@ -10,7 +10,7 @@ import re
 import itertools
 from peoplecsvmanager import PeopleCsvManager
 import requests
-
+import json
 
 class AulaCalendar:
     #def __init__(self, session, profile_id, profile_institution_code, aula_api_url):teams_url_fixer
@@ -445,8 +445,8 @@ class AulaCalendar:
             self.logger.debug(errt)
             return None
         
-    def createSimpleEvent(self, aula_event: AulaEvent):
-    
+    def createSimpleEvent(self, aula_event: AulaEvent) -> str|str:
+
         session = self._session
         
         #print("START: %s" %(startDateTime))
@@ -462,8 +462,6 @@ class AulaCalendar:
         params = {
             'method': 'calendar.createSimpleEvent'
         }
-
-        print(aula_event)
 
         description = self.teams_url_fixer(f"{aula_event.description}")
 
@@ -532,14 +530,15 @@ class AulaCalendar:
             if(response_calendar["status"]["message"] == "OK"):
             #    self.logger.info("Begivenheden \"%s\" med startdato %s blev oprettet." %(aula_event.title,aula_event.start_date_time))
                 aula_event_id = response_calendar["data"]["data"]
-                return aula_event_id
+                return aula_event_id,"SUCCESS"
             else:
             #    self.logger.warning("Begivenheden \"%s\" med startdato %s blev IKKE oprettet." %(aula_event.title,aula_event.start_date_time))
-                return None
+                json_response_dump = json.dumps(response_calendar, indent=4)
+                return None,json_response_dump
         except requests.exceptions.Timeout as errt:
             self.logger.info(f"(TIMEOUT) Begivenheden blev ikke oprettet, grundet manglende svar fra AULA")
             self.logger.debug(errt)
-            return None
+            return None, errt
         
     def getEvents(self, startDatetime, endDatetime,is_in_daylight):
        

@@ -409,10 +409,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.logger.info(f"OPRETTER BEGIVENHED ({index} af {outlook_events_count}): \"{event.title}\" med start dato {event.start_date_time}")
             event = aula_calendar.get_atendees_ids(event)
 
-            if not aula_calendar.createSimpleEvent(event) == None:
+            event_id, error_text = aula_calendar.createSimpleEvent(event)
+            if not event_id == None:
                 self.logger.info("  STATUS: Oprettelse lykkedes")
             else:
                 event.creation_or_update_errors.event_not_update_or_created = True
+                event.creation_or_update_errors.json_dump = error_text
                 self.logger.info("  STATUS: Oprettelse mislykkedes")
 
             #Fejl der senere kan sendes til brugeren. 

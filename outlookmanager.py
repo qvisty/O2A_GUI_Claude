@@ -345,7 +345,8 @@ class OutlookManager:
             error_messages_string = error_messages_string + "<h5> Begivenheden: \"" + aula_error.title +"\" (" + aula_error.start_date_time + ") " + "</h5>"
 
             if aula_error.creation_or_update_errors.event_not_update_or_created == True:
-                error_messages_string = error_messages_string + "FEJL: Begivenheden blev ikke oprettet.<br><br>"
+                json_dump = str(aula_error.creation_or_update_errors.creation_or_update_errors)
+                error_messages_string = error_messages_string + "FEJL: Begivenheden blev ikke oprettet.<br><br><h8>JSON DUMP</h8>"+json_dump+"<br><br>"
             elif aula_error.creation_or_update_errors.event_not_deleted == True:
                 error_messages_string = error_messages_string + "FEJL: Begivenheden blev ikke fjernet i AULA.<br><br>"
             elif len(aula_error.creation_or_update_errors.attendees_not_found)>0:
