@@ -51,7 +51,7 @@ class AulaConnection:
 
 
     def getAulaApiUrl(self):
-        return 'https://www.aula.dk/api/v22/'
+        return 'https://www.aula.dk/api/v23/'
 
 
     def login(self,username,password) -> LoginStatus:
