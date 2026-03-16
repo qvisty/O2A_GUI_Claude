@@ -23,12 +23,12 @@ Projektet er en eksisterende, fungerende Windows-desktopapplikation. Dette roadm
   2. Ole kan følge hvad der er lavet og hvorfor i docs/WORK_LOG.md med daterede indgange for analyser og ændringer
   3. Ole kan se begrundelsen bag konkrete tekniske valg (f.eks. hvorfor AulaCalendar og ikke AulaManager) i docs/DECISIONS.md
   4. Ole kan se en opdateret liste over kendte fejl og teknisk gæld i docs/ISSUES.md og vurdere hvad der bør prioriteres
-**Planer**: TBD
+**Planer**: 3 planer
 
 Planer:
-- [ ] 01-01: Opret docs/-mappe og skriv PROJECT_OVERVIEW.md
-- [ ] 01-02: Skriv WORK_LOG.md og DECISIONS.md
-- [ ] 01-03: Skriv ISSUES.md med kendte fejl og teknisk gæld
+- [ ] 01-01-PLAN.md — Opret docs/-mappe og skriv PROJECT_OVERVIEW.md (DOCS-01)
+- [ ] 01-02-PLAN.md — Skriv WORK_LOG.md og DECISIONS.md (DOCS-02, DOCS-03)
+- [ ] 01-03-PLAN.md — Skriv ISSUES.md med kendte fejl og teknisk gæld (DOCS-04)
 
 ### Fase 2: Fejlrettelser
 **Mål**: Alle kendte kritiske fejl er rettet så applikationen starter korrekt, kører stabilt på Python 3.12+ og synkroniserer med korrekte tidspunkter i 2026 og frem
