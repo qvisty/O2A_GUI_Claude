@@ -58,27 +58,27 @@
 
 ## Traceability
 
-| Requirement | Phase | Status |
-|-------------|-------|--------|
-| DOCS-01 | Phase 1 | Pending |
-| DOCS-02 | Phase 1 | Pending |
-| DOCS-03 | Phase 1 | Pending |
-| DOCS-04 | Phase 1 | Pending |
-| BUG-01 | Phase 2 | Pending |
-| BUG-02 | Phase 2 | Pending |
-| BUG-03 | Phase 2 | Pending |
-| BUG-04 | Phase 2 | Pending |
-| BUG-05 | Phase 2 | Pending |
-| QUAL-01 | Phase 3 | Pending |
-| QUAL-02 | Phase 3 | Pending |
-| QUAL-03 | Phase 3 | Pending |
-| PERF-01 | Phase 4 | Pending |
+| Krav | Fase | Status |
+|------|------|--------|
+| DOCS-01 | Fase 1 — Dokumentation | Afventer |
+| DOCS-02 | Fase 1 — Dokumentation | Afventer |
+| DOCS-03 | Fase 1 — Dokumentation | Afventer |
+| DOCS-04 | Fase 1 — Dokumentation | Afventer |
+| BUG-01 | Fase 2 — Fejlrettelser | Afventer |
+| BUG-02 | Fase 2 — Fejlrettelser | Afventer |
+| BUG-03 | Fase 2 — Fejlrettelser | Afventer |
+| BUG-04 | Fase 2 — Fejlrettelser | Afventer |
+| BUG-05 | Fase 2 — Fejlrettelser | Afventer |
+| QUAL-01 | Fase 3 — Kodekvalitet | Afventer |
+| QUAL-02 | Fase 3 — Kodekvalitet | Afventer |
+| QUAL-03 | Fase 3 — Kodekvalitet | Afventer |
+| PERF-01 | Fase 4 — Ydeevne | Afventer |
 
-**Coverage:**
-- v1 requirements: 13 total
-- Mapped to phases: 13
-- Unmapped: 0 ✓
+**Dækning:**
+- v1-krav i alt: 13
+- Kortlagt til faser: 13
+- Ukortlagte: 0 ✓
 
 ---
 *Requirements defined: 2026-03-16*
-*Last updated: 2026-03-16 after initial definition*
+*Last updated: 2026-03-16 — traceability opdateret efter roadmap-oprettelse*
