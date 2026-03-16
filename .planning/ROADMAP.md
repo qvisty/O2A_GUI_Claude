@@ -26,7 +26,7 @@ Projektet er en eksisterende, fungerende Windows-desktopapplikation. Dette roadm
 **Planer**: 3 planer
 
 Planer:
-- [ ] 01-01-PLAN.md — Opret docs/-mappe og skriv PROJECT_OVERVIEW.md (DOCS-01)
+- [x] 01-01-PLAN.md — Opret docs/-mappe og skriv PROJECT_OVERVIEW.md (DOCS-01)
 - [ ] 01-02-PLAN.md — Skriv WORK_LOG.md og DECISIONS.md (DOCS-02, DOCS-03)
 - [ ] 01-03-PLAN.md — Skriv ISSUES.md med kendte fejl og teknisk gæld (DOCS-04)
 
@@ -79,7 +79,7 @@ Planer:
 
 | Fase | Planer fuldført | Status | Afsluttet |
 |------|-----------------|--------|-----------|
-| 1. Dokumentation | 0/3 | Ikke startet | - |
+| 1. Dokumentation | 1/3 | I gang | - |
 | 2. Fejlrettelser | 0/2 | Ikke startet | - |
 | 3. Kodekvalitet | 0/3 | Ikke startet | - |
 | 4. Ydeevne | 0/1 | Ikke startet | - |

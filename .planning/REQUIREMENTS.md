@@ -7,7 +7,7 @@
 
 ### Dokumentation
 
-- [ ] **DOCS-01**: Ole kan læse en overordnet projektforståelse på dansk i docs/PROJECT_OVERVIEW.md
+- [x] **DOCS-01**: Ole kan læse en overordnet projektforståelse på dansk i docs/PROJECT_OVERVIEW.md
 - [ ] **DOCS-02**: Ole kan følge en løbende arbejdslog i docs/WORK_LOG.md med beskrivelse af analyser og ændringer
 - [ ] **DOCS-03**: Ole kan læse en beslutningslog i docs/DECISIONS.md med begrundelse for tekniske valg
 - [ ] **DOCS-04**: Ole kan se en opdateret problemliste i docs/ISSUES.md med kendte fejl og teknisk gæld
@@ -60,7 +60,7 @@
 
 | Krav | Fase | Status |
 |------|------|--------|
-| DOCS-01 | Fase 1 — Dokumentation | Afventer |
+| DOCS-01 | Fase 1 — Dokumentation | Fuldfort (01-01) |
 | DOCS-02 | Fase 1 — Dokumentation | Afventer |
 | DOCS-03 | Fase 1 — Dokumentation | Afventer |
 | DOCS-04 | Fase 1 — Dokumentation | Afventer |
