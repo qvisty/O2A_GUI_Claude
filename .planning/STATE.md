@@ -1,3 +1,16 @@
+---
+gsd_state_version: 1.0
+milestone: v1.0
+milestone_name: milestone
+status: Fase 1 fuldført — klar til Fase 2 (Fejlrettelser)
+last_updated: "2026-03-16T19:40:12.404Z"
+progress:
+  total_phases: 1
+  completed_phases: 1
+  total_plans: 3
+  completed_plans: 3
+---
+
 # Projekttilstand
 
 ## Projektreference
