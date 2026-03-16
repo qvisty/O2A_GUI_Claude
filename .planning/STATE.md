@@ -46,6 +46,7 @@ Seneste beslutninger der påvirker det aktuelle arbejde:
 - Kortlægning: GitPython-dependency crasher ved kørsel som .exe uden .git
 - Kortlægning: Hardkodet DST-tabel virker kun t.o.m. 2025 — kritisk for 2026-begivenheder
 - 01-01: docs/PROJECT_OVERVIEW.md oprettet med 6-trins synkroniseringsflow og begrænsningsliste på dansk
+- 01-02: docs/WORK_LOG.md og docs/DECISIONS.md oprettet — BESLUTNING-01 til BESLUTNING-04 dokumenteret med begrundelse og tradeoffs
 - 01-03: BUG-01 placeret under KRITISK-overskrift med blockquote-advarsel og deadline 29. marts 2026 for at sikre synlighed
 
 ### Ventende todos

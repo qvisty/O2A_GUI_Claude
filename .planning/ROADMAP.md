@@ -27,8 +27,8 @@ Projektet er en eksisterende, fungerende Windows-desktopapplikation. Dette roadm
 
 Planer:
 - [x] 01-01-PLAN.md — Opret docs/-mappe og skriv PROJECT_OVERVIEW.md (DOCS-01)
-- [ ] 01-02-PLAN.md — Skriv WORK_LOG.md og DECISIONS.md (DOCS-02, DOCS-03)
-- [ ] 01-03-PLAN.md — Skriv ISSUES.md med kendte fejl og teknisk gæld (DOCS-04)
+- [x] 01-02-PLAN.md — Skriv WORK_LOG.md og DECISIONS.md (DOCS-02, DOCS-03)
+- [x] 01-03-PLAN.md — Skriv ISSUES.md med kendte fejl og teknisk gæld (DOCS-04)
 
 ### Fase 2: Fejlrettelser
 **Mål**: Alle kendte kritiske fejl er rettet så applikationen starter korrekt, kører stabilt på Python 3.12+ og synkroniserer med korrekte tidspunkter i 2026 og frem
