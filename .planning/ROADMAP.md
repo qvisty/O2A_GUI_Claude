@@ -79,7 +79,7 @@ Planer:
 
 | Fase | Planer fuldført | Status | Afsluttet |
 |------|-----------------|--------|-----------|
-| 1. Dokumentation | 1/3 | I gang | - |
+| 1. Dokumentation | 3/3 | Complete   | 2026-03-16 |
 | 2. Fejlrettelser | 0/2 | Ikke startet | - |
 | 3. Kodekvalitet | 0/3 | Ikke startet | - |
 | 4. Ydeevne | 0/1 | Ikke startet | - |
