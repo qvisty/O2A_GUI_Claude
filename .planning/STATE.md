@@ -2,77 +2,89 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Fase 1 fuldført — klar til Fase 2 (Fejlrettelser)
-last_updated: "2026-03-16T19:40:12.404Z"
+current_phase: 02
+current_phase_name: fejlrettelser
+current_plan: 0
+status: paused
+stopped_at: Phase 02 context gathered
+paused_at: None
+last_updated: "2026-03-17T23:45:17.028Z"
+last_activity: 2026-03-18
 progress:
-  total_phases: 1
+  total_phases: 2
   completed_phases: 1
   total_plans: 3
   completed_plans: 3
+  percent: 25
 ---
 
-# Projekttilstand
+# Project State
 
-## Projektreference
+## Project Reference
 
-Se: .planning/PROJECT.md (opdateret 2026-03-16)
+See: `.planning/PROJECT.md` (updated 2026-03-16)
 
-**Kerneværdi:** Outlook-aftaler mærket med "AULA" skal altid afspejle den korrekte tilstand i Aula — automatisk, uden manuel indgriben
-**Nuværende fokus:** Fase 2 — Fejlrettelser
+**Core Value:** Outlook appointments marked with "AULA" must always reflect the correct state in Aula automatically, without manual intervention.
+**Current Focus:** Phase 02 - bug fixes
 
-## Nuværende position
+## Current Position
 
-Fase: 1 af 4 (Dokumentation) — FULDFØRT
-Plan: 3 af 3 i nuværende fase
-Status: Fase 1 fuldført — klar til Fase 2 (Fejlrettelser)
-Seneste aktivitet: 2026-03-16 — 01-03 fuldført (docs/ISSUES.md oprettet, Fase 1 afsluttet)
+Current Phase: 02
+Current Phase Name: fejlrettelser
+Total Phases: 4
+Current Plan: 0
+Total Plans in Phase: 0
+Status: Phase 02 context gathered - ready for planning
+Progress: 25%
+Last Activity: 2026-03-18
+Last Activity Description: Captured phase context for Phase 02 in `.planning/phases/02-fejlrettelser/02-CONTEXT.md`
+Paused At: None
 
-Fremgang: [███░░░░░░░] 25%
+Phase: 1 of 4 (Dokumentation) - COMPLETE
+Plan: 3 of 3 in current completed phase
+Next Phase: 02 - fejlrettelser
 
-## Ydeevnemålinger
+Progress Bar: [###-------] 25%
 
-**Hastighed:**
-- Fuldførte planer i alt: 3
-- Gennemsnitlig varighed: 4 min
-- Samlet udførelsestid: 0.20 timer
+## Delivery Metrics
 
-**Per fase:**
+Completed plans total: 3
+Average duration: 4 min
+Total execution time: 0.20 hours
 
-| Fase | Planer | I alt | Gns/plan |
-|------|--------|-------|----------|
+| Phase | Plans | Total | Avg/plan |
+|------|-------|-------|----------|
 | 01-dokumentation | 3 | 12 min | 4 min |
 
-**Seneste tendens:**
-- Seneste 5 planer: 01-01 (5 min), 01-02 (5 min), 01-03 (2 min)
-- Tendens: Stabil
+Recent trend: Stable
 
-*Opdateres efter hver plan*
+## Decisions Made
 
-## Akkumuleret kontekst
+| Phase | Summary | Rationale |
+|------|---------|-----------|
+| 00 | AulaCalendar is the active code path; AulaManager is legacy | Bug fixes and planning should target the active runtime path |
+| 00 | GitPython dependency crashes when running without `.git` | BUG-05 is required for packaged or copied runtime scenarios |
+| 00 | Hardcoded DST table only works through 2025 | BUG-01 is time-critical before 2026 summer time |
+| 01 | Documentation phase completed before bug-fix phase | Ole needs readable context before implementation work |
+| 02 | Phase 02 context captured in `02-CONTEXT.md` | Planning should use locked implementation decisions from discuss-phase |
 
-### Beslutninger
+## Blockers
 
-Beslutninger logges i PROJECT.md Key Decisions-tabel.
-Seneste beslutninger der påvirker det aktuelle arbejde:
+- BUG-01 is time-critical: summer time 2026 starts on 2026-03-29 and events from then on will get wrong times in Aula if not fixed.
+- Login scraping in `aula_connection.py` is fragile and has no automated tests, so changes there require manual validation against live Aula.
 
-- Kortlægning: AulaCalendar (aula/-pakken) er den aktive kodevej; AulaManager er dødkode
-- Kortlægning: GitPython-dependency crasher ved kørsel som .exe uden .git
-- Kortlægning: Hardkodet DST-tabel virker kun t.o.m. 2025 — kritisk for 2026-begivenheder
-- 01-01: docs/PROJECT_OVERVIEW.md oprettet med 6-trins synkroniseringsflow og begrænsningsliste på dansk
-- 01-02: docs/WORK_LOG.md og docs/DECISIONS.md oprettet — BESLUTNING-01 til BESLUTNING-04 dokumenteret med begrundelse og tradeoffs
-- 01-03: BUG-01 placeret under KRITISK-overskrift med blockquote-advarsel og deadline 29. marts 2026 for at sikre synlighed
+## Pending Todos
 
-### Ventende todos
+None
 
-Ingen endnu.
+## Session
 
-### Blokeringer/bekymringer
+Last session: 2026-03-17T23:45:17.012Z
+Last Date: 2026-03-17T23:45:17.012Z
+Stopped At: Phase 02 context gathered
+Resume File: .planning/phases/02-fejlrettelser/02-CONTEXT.md
 
-- BUG-01 er tidskritisk: sommertid 2026 starter 29. marts 2026 — begivenheder fra da af vil have forkert tidspunkt i Aula
-- Login-scraping (aula_connection.py) er skrøbelig og uden tests — ændringer her kræver manuel test mod live Aula
-
-## Sessionskontinuitet
-
-Seneste session: 2026-03-16
-Stoppede ved: Fuldført 01-03-PLAN.md (docs/ISSUES.md oprettet, Fase 1 Dokumentation afsluttet)
-Fortsættelsesfil: Ingen
+Human summary:
+- Latest session: 2026-03-18
+- Stopped at: Phase 02 context gathered (bug fixes) - ready for planning
+- Resume file: `.planning/phases/02-fejlrettelser/02-CONTEXT.md`
