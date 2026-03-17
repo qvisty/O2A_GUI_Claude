@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(gsd:new-project)",
+      "Skill(gsd:new-project:*)",
+      "Skill(gsd:map-codebase)",
+      "Skill(gsd:map-codebase:*)"
+    ]
+  }
+}
