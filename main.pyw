@@ -378,7 +378,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         outlook_events = outlookmgr.get_aulaevents_from_outlook(begin_datetime,end_datetime)
 
         aula_calendar =  AulaCalendar(aula_connection=aula_connection)
-        aula_events = aula_calendar.getEvents(startDatetime=begin_datetime,endDatetime=end_datetime,is_in_daylight=outlookmgr.is_in_daylight(begin_datetime))
+        aula_events = aula_calendar.getEvents(startDatetime=begin_datetime,endDatetime=end_datetime)
 
         #Her sammenlignes kalenderne
         calendar_comparer = CalendarComparer(aula_events,outlook_events)

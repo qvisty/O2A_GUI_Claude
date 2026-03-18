@@ -11,6 +11,7 @@ import itertools
 from peoplecsvmanager import PeopleCsvManager
 import requests
 import json
+from .timezone_utils import format_aula_datetime
 
 class AulaCalendar:
     #def __init__(self, session, profile_id, profile_institution_code, aula_api_url):teams_url_fixer
@@ -540,7 +541,10 @@ class AulaCalendar:
             self.logger.debug(errt)
             return None, errt
         
-    def getEvents(self, startDatetime, endDatetime,is_in_daylight):
+    def _format_lookup_datetime(self, local_dt):
+        return format_aula_datetime(local_dt)
+
+    def getEvents(self, startDatetime, endDatetime):
        
         #Calculates the diffence between the dates.
         monthsDiff = abs((endDatetime.year - startDatetime.year)) * 12 + abs(endDatetime.month - startDatetime.month)
@@ -561,15 +565,9 @@ class AulaCalendar:
             if lookUp_end >= endDatetime:
                 lookUp_end = endDatetime
 
-            def get_daylight_timezone(is_in_daylight):
-                if is_in_daylight:
-                    return "+02:00"
-                else:
-                    return "+01:00"
-
             #outlookevents_from_aula = self.icalmanager.readAulaCalendarEvents()
-            startTimeFormattet = lookUp_begin.strftime("%Y-%m-%dT%H:%M:%ST"+get_daylight_timezone(is_in_daylight))
-            endTimeFormattet = lookUp_end.strftime("%Y-%m-%dT%H:%M:%ST"+get_daylight_timezone(is_in_daylight))
+            startTimeFormattet = self._format_lookup_datetime(lookUp_begin)
+            endTimeFormattet = self._format_lookup_datetime(lookUp_end)
 
             step = step +1
 
