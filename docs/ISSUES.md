@@ -1,57 +1,60 @@
 # Kendte problemer
 
-Oversigt over kendte fejl og teknisk gæld i O2A pr. 2026-03-16. Sorteret efter prioritet. Fejlrettelser er planlagt i Fase 2.
+Oversigt over kendte fejl og teknisk gæld i O2A pr. 2026-03-18. Sorteret efter prioritet. BUG-01 til BUG-05 er rettet i Fase 2; teknisk gæld og kendte begrænsninger er stadig åbne.
 
 ---
 
-## KRITISK — Tidskritisk
-
-> **OBS:** BUG-01 vil begynde at ramme begivenheder fra 29. marts 2026 — om ca. 13 dage fra kortlægningstidspunktet. Begivenheder i sommertid vil have forkert tidspunkt i Aula hvis dette ikke rettes inden da.
+## Rettet i Fase 2
 
 ### BUG-01: Hardkodet sommertidstabel virker kun til og med 2025
 
-**Prioritet:** KRITISK
-**Deadline:** Sommertid 2026 starter 29. marts 2026
-**Symptom:** Begivenheder i Aula fra 29. marts 2026 og frem vises med forkert klokkeslæt — én time forskudt (vintertid +01:00 bruges i stedet for sommertid +02:00).
-**Årsag:** outlookmanager.py bruger en hardkodet liste over sommertidsperioder fra 2021 til 2025. Begivenheder i 2026 er ikke i listen og får tildelt det forkerte tidszoneoffset. Der er en TODO-kommentar i koden ved linje 16 der erkender dette.
-**Berørte filer:** outlookmanager.py (linje 16–45)
-**Planlagt løsning (Fase 2 — BUG-01):** Erstat hardkodet tabel med Pythons zoneinfo-modul til dynamisk beregning af sommertid for et givent tidspunkt.
-
----
-
-## Høj prioritet
+**Status:** Rettet 2026-03-18 i Fase 2, plan 02-01  
+**Tidligere prioritet:** KRITISK  
+**Tidligere symptom:** Begivenheder i Aula fra 29. marts 2026 og frem blev vist med forkert klokkeslæt - én time forskudt.  
+**Årsag:** `outlookmanager.py` brugte en hardkodet liste over sommertidsperioder fra 2021 til 2025, og den aktive Aula-opslagssti brugte samtidig ét daylight-flag for hele syncvinduet.  
+**Berørte filer:** `outlookmanager.py`, `aula/aula_calendar.py`, `main.pyw`  
+**Rettet ved:** Delt `zoneinfo`-baseret helper i `aula/timezone_utils.py` bruges nu til både Outlook-konvertering og Aula lookup-vinduer.  
+**Verifikation:** Lokale tests dækker mindst `2026-03-28 -> +01:00`, `2026-03-29 -> +02:00`, `2026-07-15 -> +02:00` og `2026-10-25 -> +01:00`.
 
 ### BUG-02: Programmet starter ikke på Python 3.12 eller nyere
 
-**Prioritet:** HØJ
-**Symptom:** Programmet kaster ImportError ved opstart på Python 3.12+. Hele SetupManager-klassen fejler at indlæse.
-**Årsag:** setupmanager.py linje 1 importerer fra distutils-modulet (`from distutils.core import run_setup`). distutils blev fjernet fra Pythons standardbibliotek i version 3.12. Importen bruges ikke i resten af filen.
-**Berørte filer:** setupmanager.py (linje 1)
-**Planlagt løsning (Fase 2 — BUG-02):** Fjern den ubrugte distutils-import.
+**Status:** Rettet 2026-03-18 i Fase 2, plan 02-01  
+**Tidligere prioritet:** HØJ  
+**Tidligere symptom:** Programmet kastede ImportError ved opstart på Python 3.12+.  
+**Årsag:** `setupmanager.py` importerede `distutils`, som er fjernet fra standardbiblioteket i Python 3.12.  
+**Berørte filer:** `setupmanager.py`  
+**Rettet ved:** Den ubrugte `distutils`-import er fjernet.  
+**Verifikation:** Lokal smoke-test på Python 3.12. Python 3.13 er stadig en miljøafhængig verifikation der mangler en lokal interpreter.
 
 ### BUG-03: Manglende internetforbindelse crasher med fejl i stedet for at vise besked
 
-**Prioritet:** HØJ
-**Symptom:** Hvis der ingen internetforbindelse er når synkronisering startes, kaster programmet en NameError og viser ingen besked i GUI-logpanelet.
-**Årsag:** main.pyw linje 538 og 554 kalder `logger.critical(...)`, men `logger`-variablen er ikke defineret i den kontekst — den er kun tilgængelig i modulets `__main__`-blok. Den korrekte reference er `self.logger`.
-**Berørte filer:** main.pyw (linje 538, 554)
-**Planlagt løsning (Fase 2 — BUG-03):** Ret `logger` til `self.logger` på begge linjer.
+**Status:** Rettet 2026-03-18 i Fase 2, plan 02-02  
+**Tidligere prioritet:** HØJ  
+**Tidligere symptom:** Hvis der ingen internetforbindelse var når synkronisering startede, kastede programmet en NameError og viste ingen besked i GUI-logpanelet.  
+**Årsag:** `main.pyw` brugte en forkert logger-reference i sync-knapperne, og startup-rækkefølgen gjorde logger-adgang sårbar tidligt i `MainWindow`.  
+**Berørte filer:** `main.pyw`  
+**Rettet ved:** Internetfejl går nu gennem én helper i `main.pyw` med altid-on GUI-log, throttlet tray-popup og reset efter vellykket sync.  
+**Verifikation:** `tests/phase02/test_internet_notifications.py` dækker GUI-log, tray-throttle, reset efter succes og fælles helper-brug i begge sync-knapper.
 
 ### BUG-04: Sletning af Aula-begivenhed fejler med NameError
 
-**Prioritet:** HØJ
-**Symptom:** Hvis en begivenhed ikke kan slettes fra Aula første forsøg, kaster programmet en NameError og afsluttes fejlagtigt.
-**Årsag:** aula/aula_calendar.py linje 365 indeholder `s#elf.logger.warning(...)` — tegnet `s` er ved en fejl havnet uden for kommentarsymbolet `#`, så Python evaluerer det som et udtryk der forsøger at finde en variabel ved navn `s`, som ikke eksisterer.
-**Berørte filer:** aula/aula_calendar.py (linje 365)
-**Planlagt løsning (Fase 2 — BUG-04):** Ret linje 365 til `#self.logger.warning(...)` (flyt `s` inden for kommentaren).
+**Status:** Rettet 2026-03-18 i Fase 2, plan 02-02  
+**Tidligere prioritet:** HØJ  
+**Tidligere symptom:** Hvis en begivenhed ikke kunne slettes fra Aula første forsøg, kastede programmet en NameError og kunne samtidig logge falsk succes i callerne.  
+**Årsag:** `aula/aula_calendar.py` indeholdt `s#elf.logger.warning(...)` i `deleteEvent()`-fejlstien, og `main.pyw` behandlede `False` som succes i nogle delete/update-stier.  
+**Berørte filer:** `aula/aula_calendar.py`, `main.pyw`  
+**Rettet ved:** Typoen i `deleteEvent()` er rettet, og callerne behandler nu kun `True` som succes. `False` og `None` behandles som fejl.  
+**Verifikation:** `tests/phase02/test_delete_failure_paths.py` reproducerer failure-pathen og beviser at `False` ikke logges som succes.
 
 ### BUG-05: Programmet crasher ved opstart hvis .git-mappen mangler
 
-**Prioritet:** HØJ
-**Symptom:** Programmet starter ikke hvis det køres udenfor et git-repository, f.eks. som kompileret .exe-fil.
-**Årsag:** main.pyw bruger GitPython-pakken til at læse git commit-hash og dato for at vise versionsnummeret i GUI. Hvis .git-mappen ikke findes, kaster GitPython en fejl under opstarten.
-**Berørte filer:** main.pyw (linje 156–163)
-**Planlagt løsning (Fase 2 — BUG-05):** Gem versionsnummer i en statisk fil (f.eks. version.txt) og fjern GitPython-afhængigheden.
+**Status:** Rettet 2026-03-18 i Fase 2, plan 02-02  
+**Tidligere prioritet:** HØJ  
+**Tidligere symptom:** Programmet startede ikke hvis det blev kørt udenfor et git-repository, f.eks. som kompileret `.exe` eller i en kopieret runtime-map.  
+**Årsag:** `main.pyw` brugte GitPython til at læse version direkte fra `.git` under startup. Hvis `.git` manglede, fejlede appen før GUI'en var klar.  
+**Berørte filer:** `main.pyw`, `version.txt`  
+**Rettet ved:** Programmet bruger nu git commit-dato hvis `.git` findes, ellers `version.txt`, ellers skjules versionsfeltet helt.  
+**Verifikation:** `tests/phase02/test_version_fallback.py` samt lokal no-`.git`-simulation med og uden `version.txt`.
 
 ---
 
@@ -61,27 +64,27 @@ Følgende punkter er ikke akutte fejl men sænker kodekvalitet og vedligeholdels
 
 | ID | Beskrivelse | Berørte filer | Fase |
 |----|-------------|---------------|------|
-| QUAL-01 | AulaManager, EventManager og DatabaseManager er dødkode der kopierer AulaCalendar-logikken. Bug-rettelser skal i dag laves to steder. | aulamanager.py, eventmanager.py, databasemanager.py | Fase 3 |
-| QUAL-02 | 11 steder i koden bruger `except: pass` som fanger alle fejl og kaster dem væk uden log-besked. Login-fejl og netværksfejl forsvinder lydløst. | aula_connection.py, aula_calendar.py, aulamanager.py, outlookmanager.py | Fase 3 |
-| QUAL-03 | Hjælpefunktioner (url_fixer, teams_url_fixer, calulate_day_of_the_week_mask) er kopieret identisk til 3-4 filer. Ændringer skal laves alle steder. | aula_calendar.py, aulamanager.py, eventmanager.py, aula/utils.py | Fase 3 |
+| QUAL-01 | AulaManager, EventManager og DatabaseManager er dødkode der kopierer AulaCalendar-logikken. Bug-rettelser skal i dag laves to steder. | `aulamanager.py`, `eventmanager.py`, `databasemanager.py` | Fase 3 |
+| QUAL-02 | Flere steder i koden bruger `except: pass` eller tilsvarende meget brede fejlgreb, så fejl forsvinder uden tydelig logning. | `aula_connection.py`, `aula_calendar.py`, `aulamanager.py`, `outlookmanager.py` | Fase 3 |
+| QUAL-03 | Hjælpefunktioner som `url_fixer`, `teams_url_fixer` og `calulate_day_of_the_week_mask` er kopieret mellem flere filer. | `aula_calendar.py`, `aulamanager.py`, `eventmanager.py`, `aula/utils.py` | Fase 3 |
 
 ## Ydeevne
 
 | ID | Beskrivelse | Berørte filer | Fase |
 |----|-------------|---------------|------|
-| PERF-01 | Deltager-navne slås op via Aulas søge-API ved hver begivenhed — med 1 sekunds forsinkelse mellem hvert opslag. En lokal cache er implementeret (databasemanager.py) men deaktiveret. Ved mange begivenheder med deltagere er synkronisering meget langsom. | aula_calendar.py (linje 283–308), databasemanager.py | Fase 4 |
+| PERF-01 | Deltager-navne slås op via Aulas søge-API for hver begivenhed, og der er indlagt pauser mellem forsøg. En lokal cache er implementeret men deaktiveret, så synkronisering bliver langsom ved mange deltagere. | `aula_calendar.py`, `databasemanager.py` | Fase 4 |
 
 ## Sikkerhedsnoter
 
 Disse punkter er ikke akutte for et lokalt desktopprogram men er dokumenteret for fuldstændighedens skyld:
 
-- Fejlnotifikationsmails CC'er en hardkodet e-mailadresse (olex3397@skolens.net) — potentielt fortrolige begivenhedsoplysninger videresendes til tredjemand (outlookmanager.py linje 185)
-- Adgangskode printes til terminal under det gamle CLI-setup-flow (setupmanager.py linje 201) — benyttes ikke via GUI-opstartsstien
+- Fejlnotifikationsmails CC'er en hardkodet e-mailadresse (`olex3397@skolens.net`) - potentielt fortrolige begivenhedsoplysninger videresendes til tredjemand.
+- Adgangskode printes til terminal under det gamle CLI-setup-flow i `setupmanager.py` - benyttes ikke via GUI-opstartsstien, men bør stadig fjernes ved lejlighed.
 
 ## Begrænsninger (by design)
 
 Disse punkter er kendte begrænsninger der ikke er planlagt rettet i den nuværende roadmap:
 
-- Tilbagevendende begivenheder (f.eks. ugentlige møder) synkroniseres ikke korrekt — de oprettes som enkeltbegivenheder uden advarsel til brugeren
-- Synkroniseringsvinduet er hardkodet til ca. 1 år frem — begivenheder mere end ~18 måneder ude synkroniseres aldrig
-- Maksimalt synkroniseringsinterval via GUI er 4 timer (kan ikke øges)
+- Tilbagevendende begivenheder synkroniseres ikke korrekt - de oprettes som enkeltbegivenheder uden tydelig brugeradvarsel.
+- Synkroniseringsvinduet er hardkodet til cirka 1 år frem - begivenheder langt ude i fremtiden synkroniseres ikke.
+- Maksimalt synkroniseringsinterval via GUI er 4 timer.
