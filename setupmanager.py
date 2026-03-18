@@ -1,4 +1,3 @@
-from distutils.core import run_setup
 from email import message
 import getpass
 from tkinter import messagebox
