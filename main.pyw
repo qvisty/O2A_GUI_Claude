@@ -14,10 +14,11 @@ import ctypes
 from dateutil.relativedelta import relativedelta, SU
 import datetime as dt
 import logging
+from pathlib import Path
 
 #Qt Imports
 from PySide6.QtGui import QIcon, QAction
-from PySide6.QtWidgets import QApplication, QMainWindow, QDialog, QSystemTrayIcon, QMenu,QStyle
+from PySide6.QtWidgets import QApplication, QMainWindow, QDialog, QSystemTrayIcon, QMenu,QStyle, QMessageBox
 from PySide6.QtCore import QRunnable, Signal, QObject, QThreadPool, Slot,QTimer
 
 #Dialogs
@@ -32,6 +33,33 @@ import git
 #
 from aula import AulaCalendar, AulaConnection, AulaEvent
 from calendar_comparer import CalendarComparer
+
+INTERNET_ERROR_CHANNELS = ("gui", "tray")
+INTERNET_ERROR_TITLE = "O2A"
+INTERNET_ERROR_MESSAGE = "Det var ikke muligt at oprette forbindelse til internettet! Forsøger igen ved næste kørsel"
+
+
+def get_program_version_text(base_dir=None):
+    if base_dir is None:
+        base_dir = Path(__file__).resolve().parent
+    else:
+        base_dir = Path(base_dir)
+
+    try:
+        repo = git.Repo(base_dir, search_parent_directories=True)
+        commit_datetime = dt.datetime.fromtimestamp(repo.head.commit.committed_date)
+        return commit_datetime.strftime('%d-%m-%Y %H:%M:%S')
+    except Exception:
+        version_file = base_dir / "version.txt"
+        if not version_file.is_file():
+            return None
+
+        version_text = version_file.read_text(encoding="utf-8").strip()
+        return version_text or None
+
+
+def get_tray_icon():
+    return globals().get("tray")
 
 
 
@@ -126,6 +154,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def __init__(self):
         super(MainWindow, self).__init__()
+        self.logger = logging.getLogger('O2A')
+        self._internet_error_channels = INTERNET_ERROR_CHANNELS
+        self._internet_error_tray_announced = False
         self.setupUi(self)
         self.signals = MainWindowSignals()
         self.setup_gui()
@@ -141,8 +172,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.initial_o2a_check()#Basal opsætning af programmet
 
-        self.logger = logging.getLogger('O2A')
-
     def setup_gui(self):
         self.runO2A.clicked.connect(self.on_runO2A_clicked)
         self.forcerunO2A.clicked.connect(self.on_forcerunO2A_clicked)
@@ -153,14 +182,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.run_program_at_startup.clicked.connect(self.on_run_program_at_startup_clicked)
 
 
-        repo = git.Repo(search_parent_directories=True)
-        sha = repo.head.object.hexsha
-        latest_commit = repo.head.commit
-        commit_date = latest_commit.committed_date
-        commit_datetime = dt.datetime.fromtimestamp(commit_date)
-        date_formatted = commit_datetime.strftime('%d-%m-%Y %H:%M:%S')
+        version_text = get_program_version_text()
+        if version_text is None:
+            self.program_version_label.hide()
+            return
 
-        self.program_version_label.setText(date_formatted)
+        self.program_version_label.setText(version_text)
+        self.program_version_label.show()
 
     def initialize_countdown_timer(self):
         self.countdown_timer = QTimer()
@@ -398,6 +426,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if len(combined_error_list) > 0:
             OutlookManager().send_a_aula_creation_or_update_error_mail(combined_error_list)
 
+        return True
+
     def __create_aula_events(self,aula_calendar: AulaCalendar, event_ids_to_create,outlook_events):
         index = 1
         outlook_events_count = len(outlook_events)
@@ -533,9 +563,32 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         except requests.ConnectionError:
             return False
 
+    def _notify_internet_connection_error(self, channels=None, show_modal=False):
+        if channels is None:
+            channels = self._internet_error_channels
+
+        if "gui" in channels:
+            self.logger.critical(INTERNET_ERROR_MESSAGE)
+
+        if "tray" in channels and not self._internet_error_tray_announced:
+            tray_icon = get_tray_icon()
+            if tray_icon is not None:
+                tray_icon.showMessage(INTERNET_ERROR_TITLE, INTERNET_ERROR_MESSAGE)
+            self._internet_error_tray_announced = True
+
+        if show_modal or "modal" in channels:
+            QMessageBox.critical(self, INTERNET_ERROR_TITLE, INTERNET_ERROR_MESSAGE)
+
+    def _reset_internet_error_notifications(self):
+        self._internet_error_tray_announced = False
+
+    def _handle_sync_result(self, result):
+        if result is True:
+            self._reset_internet_error_notifications()
+
     def on_runO2A_clicked(self):
         if not self.has_internet_connection():
-            logger.critical("Det var ikke muligt at oprette forbindelse til internettet! Forsøger igen ved næste kørsel")
+            self._notify_internet_connection_error()
             return
 
         self.toggle_gui()
@@ -543,6 +596,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Pass the function to execute
         worker = Worker(self.update_calendar,force_update=False) # Any other args, kwargs are passed to the run function
         worker.signals.result.connect(self.print_output)
+        worker.signals.result.connect(self._handle_sync_result)
         worker.signals.finished.connect(self.thread_complete)
         #worker.signals.progress.connect(self.progress_fn)
 
@@ -551,7 +605,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def on_forcerunO2A_clicked(self):
         if not self.has_internet_connection():
-            logger.critical("Det var ikke muligt at oprette forbindelse til internettet! Forsøger igen ved næste kørsel")
+            self._notify_internet_connection_error()
             return
 
         self.toggle_gui()
@@ -559,6 +613,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Pass the function to execute
         worker = Worker(self.update_calendar,force_update=True) # Any other args, kwargs are passed to the run function
         worker.signals.result.connect(self.print_output)
+        worker.signals.result.connect(self._handle_sync_result)
         worker.signals.finished.connect(self.thread_complete)
         #worker.signals.progress.connect(self.progress_fn)
 
