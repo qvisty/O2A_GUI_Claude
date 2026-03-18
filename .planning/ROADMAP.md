@@ -8,7 +8,7 @@ Projektet er en eksisterende, fungerende Windows-desktopapplikation. Dette roadm
 
 **Faseoversigt:**
 - [ ] **Fase 1: Dokumentation** - Ole kan læse og forstå projektet via en dansk docs/-mappe
-- [ ] **Fase 2: Fejlrettelser** - Alle kendte kritiske fejl er rettet, applikationen kører stabilt
+- [x] **Fase 2: Fejlrettelser** - Alle kendte kritiske fejl er rettet, applikationen kører stabilt
 - [ ] **Fase 3: Kodekvalitet** - Dødkode er fjernet, fejlhåndtering er eksplicit og hjælpefunktioner er samlet
 - [ ] **Fase 4: Ydeevne** - Deltager-caching er genaktiveret, sync-tid reduceres markant
 
@@ -43,8 +43,8 @@ Planer:
 **Planer**: TBD
 
 Planer:
-- [ ] 02-01: Ret BUG-01 (hardkodet DST-tabel) og BUG-02 (distutils-import)
-- [ ] 02-02: Ret BUG-03 (logger-referencefejl), BUG-04 (syntaksfejl i deleteEvent) og BUG-05 (GitPython-crash)
+- [x] 02-01: Ret BUG-01 (hardkodet DST-tabel) og BUG-02 (distutils-import)
+- [x] 02-02: Ret BUG-03 (logger-referencefejl), BUG-04 (syntaksfejl i deleteEvent) og BUG-05 (GitPython-crash)
 
 ### Fase 3: Kodekvalitet
 **Mål**: Kodebasen er ryddet for dødkode, fejlhåndtering er eksplicit og loggede, og duplikerede hjælpefunktioner er samlet ét sted
@@ -80,6 +80,6 @@ Planer:
 | Fase | Planer fuldført | Status | Afsluttet |
 |------|-----------------|--------|-----------|
 | 1. Dokumentation | 3/3 | Complete   | 2026-03-16 |
-| 2. Fejlrettelser | 0/2 | Ikke startet | - |
+| 2. Fejlrettelser | 2/2 | Complete | 2026-03-18 |
 | 3. Kodekvalitet | 0/3 | Ikke startet | - |
 | 4. Ydeevne | 0/1 | Ikke startet | - |

@@ -1,7 +1,7 @@
-# Requirements: O2A — Outlook to Aula
+# Requirements: O2A - Outlook to Aula
 
 **Defined:** 2026-03-16
-**Core Value:** Outlook-aftaler mærket med "AULA" skal altid afspejle den korrekte tilstand i Aula — automatisk, uden manuel indgriben.
+**Core Value:** Outlook-aftaler mærket med "AULA" skal altid afspejle den korrekte tilstand i Aula - automatisk, uden manuel indgriben.
 
 ## v1 Requirements
 
@@ -14,11 +14,11 @@
 
 ### Fejlrettelser
 
-- [ ] **BUG-01**: Begivenheder i sommertid 2026 og frem har korrekte tidspunkter i Aula (erstatter hardkodet DST-tabel med dynamisk beregning)
-- [ ] **BUG-02**: Applikationen starter og kører korrekt på Python 3.12+ (fjerner ubrugt distutils-import)
-- [ ] **BUG-03**: Manglende internetforbindelse viser en fejlbesked i GUI i stedet for at crashe med NameError
-- [ ] **BUG-04**: Sletning af Aula-begivenheder fejler ikke med NameError (retter syntaksfejl i deleteEvent)
-- [ ] **BUG-05**: Applikationen starter korrekt når .git-mappen mangler, f.eks. ved kørsel som kompileret .exe (retter GitPython-crash)
+- [x] **BUG-01**: Begivenheder i sommertid 2026 og frem har korrekte tidspunkter i Aula (erstatter hardkodet DST-tabel med dynamisk beregning)
+- [x] **BUG-02**: Applikationen starter og kører korrekt på Python 3.12+ (fjerner ubrugt distutils-import)
+- [x] **BUG-03**: Manglende internetforbindelse viser en fejlbesked i GUI i stedet for at crashe med NameError
+- [x] **BUG-04**: Sletning af Aula-begivenheder fejler ikke med NameError (retter syntaksfejl i deleteEvent)
+- [x] **BUG-05**: Applikationen starter korrekt når .git-mappen mangler, f.eks. ved kørsel som kompileret .exe (retter GitPython-crash)
 
 ### Kodekvalitet
 
@@ -51,7 +51,7 @@
 
 | Feature | Reason |
 |---------|--------|
-| Tovejs-synkronisering (Aula → Outlook) | Designmæssigt udelukket; ændrer grundlæggende arkitektur |
+| Tovejs-synkronisering (Aula -> Outlook) | Designmæssigt udelukket; ændrer grundlæggende arkitektur |
 | macOS/Linux-understøttelse | Afhænger af Windows COM/Outlook; ikke muligt uden stor omskrivning |
 | Automatiserede tests | Høj kompleksitet (login scraping, COM interop); kræver separat milestone |
 | Batch-hentning af Aula-begivenheder | Kræver Aula API-undersøgelse; udskydes til v2 |
@@ -60,25 +60,25 @@
 
 | Krav | Fase | Status |
 |------|------|--------|
-| DOCS-01 | Fase 1 — Dokumentation | Fuldfort (01-01) |
-| DOCS-02 | Fase 1 — Dokumentation | Afventer |
-| DOCS-03 | Fase 1 — Dokumentation | Afventer |
-| DOCS-04 | Fase 1 — Dokumentation | Afventer |
-| BUG-01 | Fase 2 — Fejlrettelser | Afventer |
-| BUG-02 | Fase 2 — Fejlrettelser | Afventer |
-| BUG-03 | Fase 2 — Fejlrettelser | Afventer |
-| BUG-04 | Fase 2 — Fejlrettelser | Afventer |
-| BUG-05 | Fase 2 — Fejlrettelser | Afventer |
-| QUAL-01 | Fase 3 — Kodekvalitet | Afventer |
-| QUAL-02 | Fase 3 — Kodekvalitet | Afventer |
-| QUAL-03 | Fase 3 — Kodekvalitet | Afventer |
-| PERF-01 | Fase 4 — Ydeevne | Afventer |
+| DOCS-01 | Fase 1 - Dokumentation | Fuldfort (01-01) |
+| DOCS-02 | Fase 1 - Dokumentation | Fuldfort (01-02) |
+| DOCS-03 | Fase 1 - Dokumentation | Fuldfort (01-02) |
+| DOCS-04 | Fase 1 - Dokumentation | Fuldfort (01-03) |
+| BUG-01 | Fase 2 - Fejlrettelser | Fuldfort (02-01) |
+| BUG-02 | Fase 2 - Fejlrettelser | Fuldfort (02-01) |
+| BUG-03 | Fase 2 - Fejlrettelser | Fuldfort (02-02) |
+| BUG-04 | Fase 2 - Fejlrettelser | Fuldfort (02-02) |
+| BUG-05 | Fase 2 - Fejlrettelser | Fuldfort (02-02) |
+| QUAL-01 | Fase 3 - Kodekvalitet | Afventer |
+| QUAL-02 | Fase 3 - Kodekvalitet | Afventer |
+| QUAL-03 | Fase 3 - Kodekvalitet | Afventer |
+| PERF-01 | Fase 4 - Ydeevne | Afventer |
 
 **Dækning:**
 - v1-krav i alt: 13
 - Kortlagt til faser: 13
-- Ukortlagte: 0 ✓
+- Ukortlagte: 0
 
 ---
 *Requirements defined: 2026-03-16*
-*Last updated: 2026-03-16 — traceability opdateret efter roadmap-oprettelse*
+*Last updated: 2026-03-18 - fase 2 requirements markeret fuldfort*
