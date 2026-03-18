@@ -363,7 +363,7 @@ class AulaCalendar:
                 #self.logger.info("Begivenheden blev fjernet!")
                 return True
             else:
-                s#elf.logger.warning("Begivenheden blev IKKE fjernet!")
+                self.logger.warning("Begivenheden blev IKKE fjernet!")
                 return False
 
 

@@ -498,7 +498,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
                 outlook_event = aula_calendar.get_atendees_ids(outlook_event)
 
-                if not aula_calendar.updateEvent(outlook_event) == None:
+                if aula_calendar.updateEvent(outlook_event) is True:
                     self.logger.info("  STATUS: Opdatering lykkedes")
                 else:
                     self.logger.info("  STATUS: Opdatering mislykkedes")
@@ -522,7 +522,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             event_id = event["appointmentitem"].aula_id #Should be regexp instead!
             self.logger.info(f"FJERNER BEGIVENHED ({index} af {aula_events_count}): \"{event_title}\"")
 
-            if not aula_calendar.deleteEvent(event_id) == None:
+            if aula_calendar.deleteEvent(event_id) is True:
                 self.logger.info("  STATUS: Fjernelse lykkedes")
             else:
                 self.logger.info("  STATUS: Fjernelse mislykkedes")
