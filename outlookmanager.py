@@ -6,6 +6,7 @@ import sys
 import logging
 import time
 import os
+from aula.timezone_utils import format_aula_datetime, get_aula_utc_offset
 
 class OutlookManager:
     def __init__(self):
@@ -13,73 +14,19 @@ class OutlookManager:
         self.logger = logging.getLogger('O2A')
 
     def is_in_daylight(self, date_to_check):
-        #TODO: Find en smartere måde, at lave dette tjek på!
-        daylight_periods = [
-                {
-                    "start": dt.datetime(2021,3,28), #Den første dag i sommertid
-                    "end" : dt.datetime(2021,10,30) #Den sidste dag i sommertid
-                },
-                {
-                    "start": dt.datetime(2022,3,27), #Den første dag i sommertid
-                    "end" : dt.datetime(2022,10,29) #Den sidste dag i sommertid
-                },
-                {
-                    "start": dt.datetime(2023,3,26), #Den første dag i sommertid
-                    "end" : dt.datetime(2023,10,28) #Den sidste dag i sommertid
-                },
-                {
-                    "start": dt.datetime(2024,3,31), #Den første dag i sommertid
-                    "end" : dt.datetime(2024,10,27) #Den sidste dag i sommertid
-                },
-                {
-                    "start": dt.datetime(2025,3,30), #Den første dag i sommertid
-                    "end" : dt.datetime(2025,10,26) #Den sidste dag i sommertid
-                },
-            ]
-
-        is_daylight = False
-        for daylight_period in daylight_periods:
-            if date_to_check <= daylight_period["end"] and date_to_check >= daylight_period["start"]:
-                is_daylight = True
-                break
-
-        return is_daylight
+        return get_aula_utc_offset(date_to_check) == "+02:00"
 
     def get_aulaevents_from_outlook(self,begin,end):
+        def format_outlook_datetime_parts(outlook_date_time):
+            aula_datetime = format_aula_datetime(outlook_date_time)
+            date_part, time_with_timezone = aula_datetime.split("T", 1)
+            time_part = time_with_timezone[:5]
+            timezone_part = time_with_timezone[-6:]
 
-        def get_aula_timezone(outlook_date_time):
+            year, month, day = date_part.split("-")
+            aula_date = f"{day}/{month}/{year}"
 
-            outlook_date_time = str(outlook_date_time)
-            date_part = outlook_date_time.split(" ")[0]
-            date_part = date_part.split("-")
-
-            year = int(date_part[0])
-            month = int(date_part[1])
-            day = int(date_part[2])
-
-            mDate = dt.datetime(year,month,day)
-
-            if self.is_in_daylight(mDate):
-                return "+02:00"
-            else:
-                return "+01:00"
-
-        def format_as_aula_date(outlook_date_time):
-            outlook_date_time = str(outlook_date_time)
-            date_part = outlook_date_time.split(" ")[0]
-            date_part = date_part.split("-")
-
-            date_part = date_part[2]+"/"+date_part[1]+"/"+date_part[0]
-
-            return date_part.strip()
-
-        def format_as_aula_time(outlook_date_time):
-            outlook_date_time = str(outlook_date_time)
-            time_part = outlook_date_time.split(" ")[1]
-            time_part = time_part.split(":")
-            time_part = time_part[0] + ":" + time_part[1]
-            return time_part.strip()
-            #2021-03-04 10:00:00+00:00
+            return aula_date, time_part, timezone_part
 
         aulaEvents = {}
 
@@ -134,14 +81,16 @@ class OutlookManager:
 
 
                 #Array containing event information
+                start_date, start_time, start_timezone = format_outlook_datetime_parts(event.start)
+                end_date, end_time, end_timezone = format_outlook_datetime_parts(event.end)
                 aulaEvents[GlobalAppointmentID] = {"appointmentitem":event,
                     "outlook_GlobalAppointmentID_internal" : GlobalAppointmentID,
-                    "aula_startdate": format_as_aula_date(event.start),
-                    "aula_enddate": format_as_aula_date(event.end),
-                    "aula_starttime": format_as_aula_time(event.start),
-                    "aula_endtime": format_as_aula_time(event.end),
-                    "aula_startdate_timezone" : get_aula_timezone(event.start),
-                    "aula_enddate_timezone" : get_aula_timezone(event.end),
+                    "aula_startdate": start_date,
+                    "aula_enddate": end_date,
+                    "aula_starttime": start_time,
+                    "aula_endtime": end_time,
+                    "aula_startdate_timezone" : start_timezone,
+                    "aula_enddate_timezone" : end_timezone,
                     "hideInOwnCalendar" : hideInOwnCalendar,
                     "addToInstitutionCalendar" : addToInstitutionCalendar
                 }
