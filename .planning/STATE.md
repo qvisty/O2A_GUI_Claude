@@ -6,6 +6,25 @@ current_phase: 02
 current_phase_name: fejlrettelser
 current_plan: 2
 status: paused
+stopped_at: Phase 03 context gathered
+paused_at: None
+last_updated: "2026-03-20T12:57:12.901Z"
+last_activity: 2026-03-18
+progress:
+  total_phases: 3
+  completed_phases: 2
+  total_plans: 5
+  completed_plans: 5
+---
+
+---
+gsd_state_version: 1.0
+milestone: v1.0
+milestone_name: milestone
+current_phase: 02
+current_phase_name: fejlrettelser
+current_plan: 2
+status: paused
 stopped_at: Completed 02-02-PLAN.md
 paused_at: None
 last_updated: "2026-03-18T00:24:41.294Z"
@@ -85,10 +104,10 @@ None
 
 ## Session
 
-Last session: 2026-03-18T00:24:41.216Z
-Last Date: 2026-03-18T00:24:41.216Z
-Stopped At: Completed 02-02-PLAN.md
-Resume File: None
+Last session: 2026-03-20T12:57:12.896Z
+Last Date: 2026-03-20T12:57:12.896Z
+Stopped At: Phase 03 context gathered
+Resume File: .planning/phases/03-kodekvalitet/03-CONTEXT.md
 
 Human summary:
 - Latest session: 2026-03-18
