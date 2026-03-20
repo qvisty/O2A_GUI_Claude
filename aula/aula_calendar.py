@@ -684,12 +684,15 @@ class AulaCalendar:
         url = url+"?method=calendar.getEventsForInstitutions&instCodes[]="+str(instCodes)+"&start="+startDateTime.replace("T+","%2B")+"&end="+endDateTime.replace("T+","%2B")
 
         response = session.get(url).json()
-        #response = session.get(url).json()
         #print(json.dumps(response, indent=4))
         #print(response)
-        for event in response["data"]:
-            if(event["type"] == "event" and profileId == event["creatorInstProfileId"]):
-                events.append(event)
+        try:
+            for event in response["data"]:
+                if(event["type"] == "event" and profileId == event["creatorInstProfileId"]):
+                    events.append(event)
+        except TypeError as e:
+            self.logger.critical("Der skete en fejl i getEventsForInstitutions:")
+            self.logger.critical(e)
 
         return events
 
