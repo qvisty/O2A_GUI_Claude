@@ -676,16 +676,13 @@ class AulaCalendar:
 
         params = {
             'method': 'calendar.getEventsForInstitutions',
-            "instCodes":[instCodes],
-            "start":startDateTime,"end":endDateTime
             }
 
-        events = []        
-        #FORMAT:"2021-05-17 08:00:00.0000+02:00"
+        events = []
 
-        url = url+"?method=calendar.getEventsForInstitutions&instCodes[]="+str(instCodes)+"&start="+startDateTime.replace("T+","%2B")+"&end="+endDateTime.replace("T+","%2B")
+        data = {"instCodes":[instCodes],"start":startDateTime,"end":endDateTime}
 
-        response = session.get(url).json()
+        response = session.post(url, params=params, json=data).json()
         try:
             for event in response["data"]:
                 if(event["type"] == "event" and profileId == event["creatorInstProfileId"]):
